@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+        <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#10b981">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Al-Quran Digital Indonesia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        body { background-color: #05070f; color: #f3f4f6; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
+        .cosmic-bg { position: fixed; inset: 0; z-index: -1; background: radial-gradient(circle at 10% 90%, rgba(225, 29, 72, 0.2) 0%, transparent 45%), radial-gradient(circle at 90% 10%, rgba(6, 182, 212, 0.15) 0%, transparent 45%); background-color: #04060d; }
+        .glass-nav { background: rgba(5, 7, 15, 0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass-card { background: rgba(13, 18, 30, 0.65); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s; }
+        .glass-card:hover { border-color: rgba(16, 185, 129, 0.4); transform: translateY(-3px); }
+        .font-quran { font-family: 'Amiri', serif; }
+        .glow-text { text-shadow: 0 0 20px rgba(16, 185, 129, 0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <div class="cosmic-bg"></div>
+
+    <!-- Navbar -->
+    <header class="sticky top-0 z-40 glass-nav h-20 flex items-center justify-between px-4 lg:px-12">
+        <a href="/" class="flex items-center space-x-3 group">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-cyan-400 p-[1px] flex items-center justify-center">
+                <div class="w-full h-full bg-[#05070f] rounded-[11px] flex items-center justify-center">
+                    <i class="fa-solid fa-book-quran text-emerald-400 text-xl"></i>
+                </div>
+            </div>
+            <div>
+                <span class="text-xl font-bold text-white">Al-Quran Digital</span>
+                <span class="block text-[10px] text-emerald-400 font-bold uppercase tracking-wider">Indonesia</span>
+            </div>
+        </a>
+
+        <nav class="hidden md:flex items-center space-x-6">
+            <a href="/#surah-list" class="text-sm font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-list-ol mr-2 text-emerald-400"></i>Daftar Surah</a>
+            <a href="/bookmark" class="text-sm font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-bookmark mr-2 text-amber-400"></i>Bookmark</a>
+            <a href="/history" class="text-sm font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-clock-rotate-left mr-2 text-blue-400"></i>History</a>
+            <a href="#" class="text-sm font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-headphones mr-2 text-cyan-400"></i>Qari & Audio</a>
+            <!-- Menu Donate Baru -->
+            <a href="/donate" class="text-sm font-medium text-rose-400 hover:text-rose-300"><i class="fa-solid fa-hand-holding-heart mr-2"></i>Donate</a>
+        </nav>
+
+        <a href="/#surah-list" class="bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-5 py-2.5 rounded-xl text-sm transition flex items-center shadow-[0_0_15px_rgba(16,185,129,0.4)]">
+            <i class="fa-solid fa-book-open mr-2"></i> Mulai Baca
+        </a>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <!-- Hero Section -->
+        <section class="text-center mb-16">
+            <!-- Emoji diganti dengan fa-star-and-crescent biar lebih bernuansa Islami -->
+            <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-slate-900/80 border border-slate-700/60 mb-6">
+                <i class="fa-solid fa-star-and-crescent text-amber-400 text-xs"></i>
+                <span class="text-sm text-slate-200">Platform Al-Quran Terlengkap</span>
+            </div>
+            
+            <h1 class="text-5xl lg:text-7xl font-extrabold mb-4 tracking-tight">
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 glow-text">Al-Quran Digital</span>
+            </h1>
+            <h2 class="text-3xl lg:text-4xl font-bold text-slate-200 mb-6">Bahasa Indonesia</h2>
+            <p class="text-slate-400 max-w-2xl mx-auto mb-10 text-lg">Baca, dengarkan, dan pelajari Al-Quran dengan terjemahan Indonesia, audio 5 qari terbaik, tafsir lengkap Kemenag, dan pencarian cepat.</p>
+            
+            <div class="flex justify-center gap-4">
+                <a href="/#surah-list" class="px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded-xl flex items-center gap-2 shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                    <i class="fa-solid fa-book-open"></i> Mulai Membaca
+                </a>
+                <button onclick="document.getElementById('searchInput').focus()" class="px-6 py-3 bg-slate-900 border border-slate-700 text-white font-bold rounded-xl flex items-center gap-2 hover:border-emerald-500 transition">
+                    <i class="fa-solid fa-magnifying-glass text-emerald-400"></i> Cari Surah / Ayat
+                </button>
+            </div>
+        </section>
+
+        <!-- Feature Cards -->
+        <section class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-20">
+            <div class="glass-card p-6 rounded-2xl">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center mb-4"><i class="fa-solid fa-book text-emerald-400"></i></div>
+                <h3 class="font-bold text-white mb-2">Baca Al-Quran</h3>
+                <p class="text-xs text-slate-400">Teks Arab, transliterasi, dan terjemahan bahasa Indonesia</p>
+            </div>
+            <div class="glass-card p-6 rounded-2xl">
+                <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center mb-4"><i class="fa-solid fa-headphones text-blue-400"></i></div>
+                <h3 class="font-bold text-white mb-2">Audio Murottal</h3>
+                <p class="text-xs text-slate-400">Mendengarkan dengan audio dari 5 qari ternama dunia</p>
+            </div>
+            <div class="glass-card p-6 rounded-2xl">
+                <div class="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center mb-4"><i class="fa-solid fa-lightbulb text-amber-400"></i></div>
+                <h3 class="font-bold text-white mb-2">Tafsir Lengkap</h3>
+                <p class="text-xs text-slate-400">Memahami makna surah & ayat dengan tafsir standar Kemenag</p>
+            </div>
+            <div class="glass-card p-6 rounded-2xl">
+                <div class="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center mb-4"><i class="fa-solid fa-code text-purple-400"></i></div>
+                <h3 class="font-bold text-white mb-2">Pencarian Cepat</h3>
+                <p class="text-xs text-slate-400">Temukan nama surah, nomor, atau arti secara instan</p>
+            </div>
+            <div class="glass-card p-6 rounded-2xl">
+                <div class="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center mb-4"><i class="fa-solid fa-bookmark text-cyan-400"></i></div>
+                <h3 class="font-bold text-white mb-2">Bookmark</h3>
+                <p class="text-xs text-slate-400">Simpan posisi bacaan terakhir & ayat favorit Anda</p>
+            </div>
+        </section>
+
+        <!-- Daftar Surah -->
+        <section id="surah-list">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-2"><i class="fa-solid fa-list-check text-emerald-400"></i> Daftar Surah Al-Quran</h2>
+                    <p class="text-sm text-slate-400 mt-1">114 Surah lengkap beserta audio, teks Latin dan Terjemahan</p>
+                </div>
+                <div class="relative w-full md:w-80">
+                    <input type="text" id="searchInput" onkeyup="searchSurah()" placeholder="Cari Surah (contoh: Yasin)..." class="w-full bg-[#0d121e] border border-slate-700/80 rounded-xl px-4 py-3 pl-11 text-white focus:outline-none focus:border-emerald-500 transition">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="flex gap-2 mb-6">
+                <button class="px-4 py-2 bg-emerald-500 text-black font-bold rounded-lg text-sm flex items-center gap-2"><i class="fa-solid fa-bars"></i> Semua (114)</button>
+                <button class="px-4 py-2 bg-slate-800 text-slate-300 rounded-lg text-sm hover:bg-slate-700 flex items-center gap-2"><i class="fa-solid fa-kaaba text-slate-400"></i> Makkiyah</button>
+                <button class="px-4 py-2 bg-slate-800 text-slate-300 rounded-lg text-sm hover:bg-slate-700 flex items-center gap-2"><i class="fa-solid fa-mosque text-slate-400"></i> Madaniyah</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="gridSurah">
+                <% surahs.forEach(surah => { %>
+                    <a href="/surah/<%= surah.nomor %>" class="surah-card glass-card p-5 rounded-2xl flex items-center justify-between group hover:border-emerald-500/50">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-slate-900 border border-slate-700 text-emerald-400 font-bold flex items-center justify-center text-sm"><%= surah.nomor %></div>
+                            <div>
+                                <h3 class="surah-name font-bold text-white group-hover:text-emerald-400 transition text-lg"><%= surah.namaLatin %></h3>
+                                <p class="text-xs text-slate-400"><%= surah.arti %> • <%= surah.jumlahAyat %> Ayat</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-quran text-2xl text-emerald-400 block mb-1"><%= surah.nama %></span>
+                            <!-- Icon untuk penanda kota turunnya surah -->
+                            <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500 flex items-center justify-end gap-1">
+                                <% if (surah.tempatTurun.toLowerCase() === 'mekah' || surah.tempatTurun.toLowerCase() === 'makkiyah') { %>
+                                    <i class="fa-solid fa-kaaba"></i>
+                                <% } else { %>
+                                    <i class="fa-solid fa-mosque"></i>
+                                <% } %>
+                                <%= surah.tempatTurun %>
+                            </span>
+                        </div>
+                    </a>
+                <% }) %>
+            </div>
+        </section>
+    </main>
+    <footer class="glass-nav py-8 mt-12 text-center text-slate-500 text-sm border-t border-slate-800 z-40 relative">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col items-center">
+            <p class="mb-2"><i class="fa-solid fa-code text-emerald-400 mr-1"></i> Dikembangkan dengan <i class="fa-solid fa-heart text-rose-500 mx-1"></i> untuk umat.</p>
+            <p>Al-Quran Digital Indonesia &copy; 2026 • Menggunakan API dari equran.id</p>
+        </div>
+    </footer>
+    <script>
+        function searchSurah() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let cards = document.querySelectorAll('.surah-card');
+            cards.forEach(card => {
+                let name = card.querySelector('.surah-name').innerText.toLowerCase();
+                card.style.display = name.includes(input) ? 'flex' : 'none';
+            });
+        }
+    </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(() => console.log('PWA Ready'))
+                .catch((err) => console.log('PWA Error:', err));
+        }
+    </script>
+</body>
+</html>
