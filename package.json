@@ -1,0 +1,18 @@
+{
+  "name": "Al-Quran Digital Bahasa Indonesia",
+  "version": "1.0.0",
+  "description": "Baca, dengarkan, dan pelajari Al-Quran dengan terjemahan Indonesia, audio 5 qari terbaik, tafsir lengkap Kemenag, dan pencarian cepat.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "axios": "^1.20.0",
+    "ejs": "^7.0.1",
+    "express": "^5.2.1"
+  }
+}
