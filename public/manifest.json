@@ -1,0 +1,16 @@
+{
+  "name": "Al-Quran Digital Indonesia",
+  "short_name": "Quran Digital",
+  "description": "Baca, dengarkan, dan pelajari Al-Quran",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#05070f",
+  "theme_color": "#10b981",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3382/3382215.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
