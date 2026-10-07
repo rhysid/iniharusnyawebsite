@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <!-- Tambahin ini di dalam tag <head> semua file EJS lo -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#10b981">
+    <title>Bookmark - Al-Quran Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>body { background-color: #05070f; color: white; }</style>
+</head>
+<body class="p-8">
+    <a href="/" class="text-emerald-400 mb-6 inline-block"><i class="fa-solid fa-arrow-left"></i> Kembali</a>
+    <h1 class="text-3xl font-bold mb-6"><i class="fa-solid fa-bookmark text-amber-400"></i> Daftar Bookmark</h1>
+    
+    <div id="bookmarkList" class="space-y-4"></div>
+
+    <script>
+        const bookmarks = JSON.parse(localStorage.getItem('quran_bookmarks')) || [];
+        const container = document.getElementById('bookmarkList');
+        
+        if(bookmarks.length === 0) {
+            container.innerHTML = '<p class="text-slate-500">Belum ada ayat yang dibookmark cuy.</p>';
+        } else {
+            bookmarks.forEach(b => {
+                container.innerHTML += `
+                    <div class="p-5 bg-slate-900 border border-slate-800 rounded-xl flex justify-between items-center">
+                        <div>
+                            <h2 class="font-bold text-lg text-white">Surah ${b.surahName}</h2>
+                            <p class="text-emerald-400 text-sm">Ayat ke-${b.ayatNo}</p>
+                            <p class="text-xs text-slate-500 mt-1">Disimpan: ${b.date}</p>
+                        </div>
+                        <a href="/surah/${b.surahNo}#ayat-${b.ayatNo}" class="px-4 py-2 bg-emerald-500 text-black rounded-lg font-bold">Lanjut Baca</a>
+                    </div>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>

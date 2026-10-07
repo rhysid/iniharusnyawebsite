@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surah <%= surah.namaLatin %> - Al-Quran Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#10b981">
+    <style>
+        body { background-color: #05070f; color: #f3f4f6; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
+        .cosmic-bg { position: fixed; inset: 0; z-index: -1; background-color: #04060d; }
+        .glass-nav { background: rgba(5, 7, 15, 0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass-card { background: rgba(13, 18, 30, 0.65); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .font-quran { font-family: 'Amiri', serif; line-height: 2.3; }
+        /* Custom Scrollbar Modal */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #05070f; }
+        ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 4px; }
+    </style>
+</head>
+<body class="min-h-screen pb-32">
+    <div class="cosmic-bg"></div>
+
+    <header class="sticky top-0 z-40 glass-nav h-20 flex items-center justify-between px-4 lg:px-12">
+        <a href="/" class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-cyan-400 p-[1px] flex items-center justify-center">
+                <div class="w-full h-full bg-[#05070f] rounded-[11px] flex items-center justify-center">
+                    <i class="fa-solid fa-book-quran text-emerald-400 text-xl"></i>
+                </div>
+            </div>
+            <div><span class="text-xl font-bold text-white">Al-Quran Digital</span></div>
+        </a>
+        <nav class="hidden md:flex items-center space-x-6">
+            <a href="/" class="text-sm font-medium text-emerald-400"><i class="fa-solid fa-list-ol mr-2"></i>Daftar Surah</a>
+            <a href="/bookmark" class="text-sm font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-bookmark mr-2 text-amber-400"></i>Bookmark</a>
+            <a href="/history" class="text-sm font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-clock-rotate-left mr-2 text-blue-400"></i>History</a>
+        </nav>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-8 relative">
+        
+        <!-- Top Action Buttons -->
+        <div class="flex justify-between items-center mb-6">
+            <a href="/" class="px-4 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-gray-300 hover:text-white hover:border-emerald-500 transition"><i class="fa-solid fa-arrow-left mr-2"></i>Kembali</a>
+            <button onclick="openTafsirModal()" class="px-4 py-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-sm font-bold text-amber-400 hover:bg-amber-500/20 transition"><i class="fa-solid fa-lightbulb mr-1"></i> Tafsir Surah</button>
+        </div>
+
+        <!-- Banner Surah -->
+        <div class="glass-card p-8 rounded-3xl text-center relative mb-6 border-emerald-500/30">
+            <span class="px-3 py-1 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-4 block w-max mx-auto uppercase">
+                <%= surah.tempatTurun %> • <%= surah.jumlahAyat %> AYAT
+            </span>
+            <h1 class="text-4xl font-extrabold text-white mb-1"><%= surah.namaLatin %></h1>
+            <p class="text-slate-400 text-sm mb-4"><%= surah.arti %></p>
+            <p class="text-6xl font-quran text-emerald-400 my-6"><%= surah.nama %></p>
+            
+            <div class="flex justify-center items-center gap-3 mt-6">
+                <button onclick="playFullSurah()" class="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-play"></i> Putar Full Surah
+                </button>
+                <select id="qariSelect" class="bg-slate-900 border border-slate-700 text-slate-200 text-sm rounded-xl px-4 py-2.5 focus:outline-none focus:border-emerald-500 cursor-pointer">
+                    <option value="01">Abdullah Al-Juhany</option>
+                    <option value="02">Abdul Mohsen Al-Qasim</option>
+                    <option value="03">Abdurrahman As-Sudais</option>
+                    <option value="04">Ibrahim Al-Dossari</option>
+                    <option value="05" selected>Mishary Rashid</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Ayat List -->
+        <div class="space-y-6">
+            <% if (surah.nomor !== 1 && surah.nomor !== 9) { %>
+                <div class="glass-card p-6 rounded-2xl text-center mb-6">
+                    <p class="font-quran text-4xl text-emerald-400">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+                </div>
+            <% } %>
+
+            <% surah.ayat.forEach(ayat => { %>
+                <div class="glass-card p-6 sm:p-8 rounded-3xl space-y-6" id="ayat-<%= ayat.nomorAyat %>">
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-800/80">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center"><%= ayat.nomorAyat %></span>
+                            <span class="text-xs text-slate-500"><%= surah.namaLatin %> : <%= ayat.nomorAyat %></span>
+                        </div>
+                        
+                        <div class="flex items-center gap-2">
+                            <button onclick="playAyat('<%= ayat.audio['01'] %>', '<%= ayat.audio['02'] %>', '<%= ayat.audio['03'] %>', '<%= ayat.audio['04'] %>', '<%= ayat.audio['05'] %>', '<%= ayat.nomorAyat %>')" class="w-10 h-10 rounded-xl bg-[#0a0f1c] border border-slate-800 text-slate-300 hover:text-emerald-400 hover:border-emerald-500 transition flex items-center justify-center">
+                                <i class="fa-solid fa-play text-sm"></i>
+                            </button>
+                            <button onclick="saveBookmark('<%= surah.nomor %>', '<%= surah.namaLatin %>', '<%= ayat.nomorAyat %>')" class="w-10 h-10 rounded-xl bg-[#0a0f1c] border border-slate-800 text-slate-300 transition flex items-center justify-center bookmark-btn-<%= ayat.nomorAyat %>">
+                                <i class="fa-regular fa-bookmark text-sm"></i>
+                            </button>
+                            <button onclick="copyAyat(`<%= ayat.teksArab %>\n\n<%= ayat.teksIndonesia %>`)" class="w-10 h-10 rounded-xl bg-[#0a0f1c] border border-slate-800 text-slate-300 hover:text-white transition flex items-center justify-center">
+                                <i class="fa-regular fa-copy text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="text-right py-2">
+                        <p class="font-quran text-4xl leading-[2.5] text-slate-100"><%= ayat.teksArab %></p>
+                    </div>
+                    <div class="text-sm text-emerald-400/90 font-medium italic"><%= ayat.teksLatin %></div>
+                    <div class="text-sm text-slate-300 leading-relaxed pt-2 border-t border-slate-800/40"><%= ayat.teksIndonesia %></div>
+                </div>
+            <% }) %>
+        </div>
+
+        <!-- Navigasi Bawah -->
+        <div class="flex items-center justify-center gap-4 mt-10 pt-8 border-t border-slate-800/80 mb-4">
+            <% if (surah.nomor > 1) { %>
+                <a href="/surah/<%= surah.nomor - 1 %>" class="px-4 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-gray-300 hover:text-white hover:border-emerald-500 transition flex items-center gap-2 group">
+                    <i class="fa-solid fa-arrow-left text-emerald-400 group-hover:-translate-x-1 transition-transform"></i> <span>Surah Sebelumnya</span>
+                </a>
+            <% } %>
+            <% if (surah.nomor < 114) { %>
+                <a href="/surah/<%= surah.nomor + 1 %>" class="px-4 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-gray-300 hover:text-white hover:border-emerald-500 transition flex items-center gap-2 group">
+                    <span>Surah Selanjutnya</span> <i class="fa-solid fa-arrow-right text-emerald-400 group-hover:translate-x-1 transition-transform"></i>
+                </a>
+            <% } %>
+        </div>
+    </main>
+
+ <!-- UI MODAL TAFSIR (Sudah di-render EJS) -->
+    <div id="tafsirModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div class="glass-card bg-[#0a0f1c] max-w-2xl w-full rounded-2xl max-h-[85vh] flex flex-col border border-slate-700 shadow-2xl transform scale-95 transition-transform duration-300" id="tafsirModalContent">
+            <div class="p-5 border-b border-slate-800 flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-lightbulb text-amber-400 mr-2"></i>Tafsir Surah <%= surah.namaLatin %></h3>
+                    <p class="text-xs text-slate-400">Tafsir Ringkas Kemenag RI</p>
+                </div>
+                <button onclick="closeTafsirModal()" class="w-8 h-8 rounded-lg bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="tafsirModalBody" class="p-6 overflow-y-auto space-y-4 text-sm leading-relaxed text-slate-300">
+                
+                <!-- Data tafsir langsung dimuat dari Node.js cuy -->
+                <% tafsir.tafsir.forEach(item => { %>
+                    <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 hover:border-amber-500/30 transition">
+                        <h4 class="font-bold text-amber-400 mb-2 flex items-center gap-2">
+                            <span class="w-6 h-6 rounded bg-amber-500/10 flex items-center justify-center text-xs"><%= item.ayat %></span> 
+                            Ayat <%= item.ayat %>
+                        </h4>
+                        <p class="text-sm text-slate-300 leading-relaxed text-justify"><%= item.teks %></p>
+                    </div>
+                <% }) %>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- UI GLOBAL AUDIO PLAYER (Sticky Bottom) -->
+    <div id="stickyAudioPlayer" class="fixed bottom-0 inset-x-0 z-50 glass-nav border-t border-slate-800/80 px-4 py-3 transform translate-y-full transition-transform duration-300">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            
+            <div class="flex items-center space-x-3 w-full sm:w-1/4">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center shrink-0">
+                    <i id="audioDiscIcon" class="fa-solid fa-compact-disc text-emerald-400 text-lg"></i>
+                </div>
+                <div class="truncate">
+                    <p id="audioSurahName" class="text-sm font-bold text-white truncate"><%= surah.namaLatin %></p>
+                    <p id="audioAyatDetail" class="text-xs text-slate-400 truncate">Memuat...</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col items-center w-full sm:w-2/4">
+                <div class="flex items-center space-x-5 mb-1">
+                    <button onclick="toggleGlobalAudio()" class="w-10 h-10 rounded-full bg-emerald-500 text-slate-950 flex items-center justify-center font-bold hover:scale-105 transition shadow-[0_0_15px_rgba(16,185,129,0.4)]">
+                        <i id="globalPlayPauseIcon" class="fa-solid fa-pause"></i>
+                    </button>
+                </div>
+                <div class="w-full flex items-center space-x-3">
+                    <span id="audioCurrentTime" class="text-[10px] font-mono text-slate-400 w-8 text-right">0:00</span>
+                    <input type="range" id="audioProgress" value="0" max="100" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500" oninput="seekAudio(this.value)">
+                    <span id="audioTotalDuration" class="text-[10px] font-mono text-slate-400 w-8">0:00</span>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-end space-x-3 w-full sm:w-1/4">
+                <button onclick="closeAudioPlayer()" class="text-slate-500 hover:text-slate-300 px-3 py-1 bg-slate-800 rounded-lg text-xs"><i class="fa-solid fa-xmark mr-1"></i> Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden HTML Audio Element -->
+    <audio id="globalAudio"></audio>
+
+    <script>
+        // --- LOGIC HISTORY & BOOKMARK ---
+        window.onload = function() {
+            let history = JSON.parse(localStorage.getItem('quran_history')) || [];
+            let currentSurah = { 
+                nomor: '<%= surah.nomor %>', namaLatin: '<%= surah.namaLatin %>', 
+                arti: '<%= surah.arti %>', date: new Date().toLocaleDateString('id-ID')
+            };
+            history = history.filter(h => h.nomor !== currentSurah.nomor);
+            history.unshift(currentSurah);
+            localStorage.setItem('quran_history', JSON.stringify(history));
+            checkBookmarks();
+        };
+
+        function saveBookmark(surahNo, surahName, ayatNo) {
+            let bookmarks = JSON.parse(localStorage.getItem('quran_bookmarks')) || [];
+            const index = bookmarks.findIndex(b => b.surahNo === surahNo && b.ayatNo === ayatNo);
+            
+            if (index > -1) {
+                bookmarks.splice(index, 1);
+                document.querySelector(`.bookmark-btn-${ayatNo}`).innerHTML = '<i class="fa-regular fa-bookmark text-sm"></i>';
+                document.querySelector(`.bookmark-btn-${ayatNo}`).classList.remove('text-amber-400', 'border-amber-500');
+            } else {
+                bookmarks.push({ surahNo, surahName, ayatNo, date: new Date().toLocaleDateString('id-ID') });
+                document.querySelector(`.bookmark-btn-${ayatNo}`).innerHTML = '<i class="fa-solid fa-bookmark text-sm"></i>';
+                document.querySelector(`.bookmark-btn-${ayatNo}`).classList.add('text-amber-400', 'border-amber-500');
+            }
+            localStorage.setItem('quran_bookmarks', JSON.stringify(bookmarks));
+        }
+
+        function checkBookmarks() {
+            let bookmarks = JSON.parse(localStorage.getItem('quran_bookmarks')) || [];
+            bookmarks.forEach(b => {
+                if(b.surahNo === '<%= surah.nomor %>') {
+                    let btn = document.querySelector(`.bookmark-btn-${b.ayatNo}`);
+                    if(btn) {
+                        btn.innerHTML = '<i class="fa-solid fa-bookmark text-sm"></i>';
+                        btn.classList.add('text-amber-400', 'border-amber-500');
+                    }
+                }
+            });
+        }
+
+        function copyAyat(text) {
+            navigator.clipboard.writeText(text);
+            alert("Ayat berhasil disalin!");
+        }
+
+
+        // --- LOGIC AUDIO PLAYER STICKY ---
+        const audioEl = document.getElementById('globalAudio');
+        const stickyPlayer = document.getElementById('stickyAudioPlayer');
+        const playIcon = document.getElementById('globalPlayPauseIcon');
+        const discIcon = document.getElementById('audioDiscIcon');
+        let isUserSeeking = false;
+
+        function getQariName() {
+            const sel = document.getElementById('qariSelect');
+            return sel.options[sel.selectedIndex].text;
+        }
+
+        function playFullSurah() {
+            const qari = document.getElementById('qariSelect').value;
+            const audioData = <%- JSON.stringify(surah.audioFull) %>;
+            startAudio(audioData[qari], `<%= surah.namaLatin %> (Full)`, getQariName());
+        }
+
+        function playAyat(a1, a2, a3, a4, a5, ayatNo) {
+            const qari = document.getElementById('qariSelect').value;
+            const audioMap = { "01": a1, "02": a2, "03": a3, "04": a4, "05": a5 };
+            startAudio(audioMap[qari], `<%= surah.namaLatin %> : Ayat ${ayatNo}`, getQariName());
+        }
+
+        function startAudio(url, title, subtitle) {
+            audioEl.src = url;
+            audioEl.play();
+            
+            document.getElementById('audioSurahName').innerText = title;
+            document.getElementById('audioAyatDetail').innerText = subtitle;
+            stickyPlayer.classList.remove('translate-y-full'); // Munculin Player
+            
+            playIcon.className = "fa-solid fa-pause";
+            discIcon.classList.add('animate-spin');
+        }
+
+        function toggleGlobalAudio() {
+            if (audioEl.paused) {
+                audioEl.play();
+                playIcon.className = "fa-solid fa-pause";
+                discIcon.classList.add('animate-spin');
+            } else {
+                audioEl.pause();
+                playIcon.className = "fa-solid fa-play";
+                discIcon.classList.remove('animate-spin');
+            }
+        }
+
+        function closeAudioPlayer() {
+            audioEl.pause();
+            stickyPlayer.classList.add('translate-y-full');
+            discIcon.classList.remove('animate-spin');
+        }
+
+        audioEl.ontimeupdate = () => {
+            if(!isUserSeeking && audioEl.duration) {
+                const progress = (audioEl.currentTime / audioEl.duration) * 100;
+                document.getElementById('audioProgress').value = progress;
+                document.getElementById('audioCurrentTime').innerText = formatTime(audioEl.currentTime);
+                document.getElementById('audioTotalDuration').innerText = formatTime(audioEl.duration);
+            }
+        };
+
+        audioEl.onended = () => {
+            playIcon.className = "fa-solid fa-play";
+            discIcon.classList.remove('animate-spin');
+        };
+
+        document.getElementById('audioProgress').addEventListener('mousedown', () => isUserSeeking = true);
+        document.getElementById('audioProgress').addEventListener('touchstart', () => isUserSeeking = true);
+        
+        function seekAudio(value) {
+            if(audioEl.duration) {
+                const seekTo = (value / 100) * audioEl.duration;
+                audioEl.currentTime = seekTo;
+                document.getElementById('audioCurrentTime').innerText = formatTime(seekTo);
+            }
+            isUserSeeking = false;
+        }
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+
+     // --- LOGIC MODAL TAFSIR ---
+        function openTafsirModal() {
+            const modal = document.getElementById('tafsirModal');
+            const modalContent = document.getElementById('tafsirModalContent');
+            
+            modal.classList.remove('hidden');
+            // Sedikit delay buat animasi pop
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeTafsirModal() {
+            const modal = document.getElementById('tafsirModal');
+            const modalContent = document.getElementById('tafsirModalContent');
+            
+            modal.classList.add('opacity-0');
+            modalContent.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300); // Sesuaikan dengan durasi animasi
+        }
+    </script>
+</body>
+</html>

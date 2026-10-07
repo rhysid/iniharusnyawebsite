@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+        <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#10b981">
+    <title>History Bacaan - Al-Quran Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>body { background-color: #05070f; color: white; }</style>
+</head>
+<body class="p-8">
+    <a href="/" class="text-emerald-400 mb-6 inline-block"><i class="fa-solid fa-arrow-left"></i> Kembali</a>
+    <h1 class="text-3xl font-bold mb-6"><i class="fa-solid fa-clock-rotate-left text-blue-400"></i> Terakhir Dibaca</h1>
+    
+    <div id="historyList" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+
+    <script>
+        const history = JSON.parse(localStorage.getItem('quran_history')) || [];
+        const container = document.getElementById('historyList');
+        
+        if(history.length === 0) {
+            container.innerHTML = '<p class="text-slate-500">Belum ada riwayat bacaan.</p>';
+        } else {
+            history.forEach(h => {
+                container.innerHTML += `
+                    <a href="/surah/${h.nomor}" class="p-5 bg-slate-900 border border-slate-800 rounded-xl flex items-center justify-between hover:border-emerald-500 transition">
+                        <div>
+                            <h2 class="font-bold text-xl text-white">${h.namaLatin}</h2>
+                            <p class="text-sm text-slate-400">${h.arti}</p>
+                            <p class="text-xs text-blue-400 mt-2">Terakhir diakses: ${h.date}</p>
+                        </div>
+                        <div class="w-10 h-10 bg-emerald-500/10 text-emerald-400 rounded-full flex items-center justify-center font-bold">${h.nomor}</div>
+                    </a>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>
