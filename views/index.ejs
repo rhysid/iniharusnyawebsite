@@ -6,6 +6,24 @@
     <meta name="theme-color" content="#10b981">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Al-Quran Digital Indonesia</title>
+      <meta name="title" content="Al-Quran Digital Indonesia">
+    <meta name="description" content="Platform Al-Quran Digital terlengkap dengan terjemahan bahasa Indonesia, audio murottal 5 qari terbaik, tafsir Kemenag, dan pencarian cepat.">
+
+    <!-- Open Graph / Facebook / WhatsApp Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://quraan.web.id"> <!-- Ganti pakai domain asli lo nanti kalau udah online -->
+    <meta property="og:title" content="Al-Quran Digital Indonesia - Baca, Audio, Tafsir & Bookmark">
+    <meta property="og:description" content="Platform Al-Quran Digital terlengkap dengan terjemahan bahasa Indonesia, audio murottal 5 qari terbaik, tafsir Kemenag, dan pencarian cepat.">
+    <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/3382/3382215.png"> <!-- Ganti link ini pake gambar banner/logo web lo yang ukuran 1200x630px biar cakep -->
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://quraan.web.id">
+    <meta name="twitter:title" content="Al-Quran Digital Indonesia - Baca, Audio, Tafsir & Bookmark">
+    <meta name="twitter:description" content="Platform Al-Quran Digital terlengkap dengan terjemahan bahasa Indonesia, audio murottal 5 qari terbaik, tafsir Kemenag, dan pencarian cepat.">
+    <meta name="twitter:image" content="https://cdn-icons-png.flaticon.com/512/3382/3382215.png">
+
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- FontAwesome Library -->
@@ -23,8 +41,8 @@
 <body class="min-h-screen flex flex-col">
     <div class="cosmic-bg"></div>
 
-    <!-- Navbar -->
-    <header class="sticky top-0 z-40 glass-nav h-20 flex items-center justify-between px-4 lg:px-12">
+   <!-- Header Utama -->
+    <header class="sticky top-0 z-40 glass-nav h-20 flex items-center justify-between px-4 lg:px-12 relative">
         <a href="/" class="flex items-center space-x-3 group">
             <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-cyan-400 p-[1px] flex items-center justify-center">
                 <div class="w-full h-full bg-[#05070f] rounded-[11px] flex items-center justify-center">
@@ -37,19 +55,52 @@
             </div>
         </a>
 
-        <nav class="hidden md:flex items-center space-x-6">
-            <a href="/#surah-list" class="text-sm font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-list-ol mr-2 text-emerald-400"></i>Daftar Surah</a>
-            <a href="/bookmark" class="text-sm font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-bookmark mr-2 text-amber-400"></i>Bookmark</a>
-            <a href="/history" class="text-sm font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-clock-rotate-left mr-2 text-blue-400"></i>History</a>
-            <a href="#" class="text-sm font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-headphones mr-2 text-cyan-400"></i>Qari & Audio</a>
-            <!-- Menu Donate Baru -->
-            <a href="/donate" class="text-sm font-medium text-rose-400 hover:text-rose-300"><i class="fa-solid fa-hand-holding-heart mr-2"></i>Donate</a>
-        </nav>
+        <!-- Menu Navigasi Desktop -->
+        <div class="hidden md:flex items-center space-x-6">
+            <nav class="flex items-center space-x-6">
+                <a href="/#surah-list" class="text-sm font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-list-ol mr-2 text-emerald-400"></i>Daftar Surah</a>
+                <a href="/bookmark" class="text-sm font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-bookmark mr-2 text-amber-400"></i>Bookmark</a>
+                <a href="/history" class="text-sm font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-clock-rotate-left mr-2 text-blue-400"></i>History</a>
+                <a href="#" class="text-sm font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-headphones mr-2 text-cyan-400"></i>Qari & Audio</a>
+                <a href="/donate" class="text-sm font-medium text-rose-400 hover:text-rose-300"><i class="fa-solid fa-hand-holding-heart mr-2"></i>Donate</a>
+            </nav>
+            <a href="/#surah-list" class="bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-5 py-2.5 rounded-xl text-sm transition flex items-center shadow-[0_0_15px_rgba(16,185,129,0.4)]">
+                <i class="fa-solid fa-book-open mr-2"></i> Mulai Baca
+            </a>
+        </div>
 
-        <a href="/#surah-list" class="bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-5 py-2.5 rounded-xl text-sm transition flex items-center shadow-[0_0_15px_rgba(16,185,129,0.4)]">
-            <i class="fa-solid fa-book-open mr-2"></i> Mulai Baca
-        </a>
+        <!-- Tombol Hamburger Mobile (Garis 3) -->
+        <button onclick="toggleMobileMenu()" class="md:hidden text-emerald-400 p-2 focus:outline-none hover:text-emerald-300 transition">
+            <i class="fa-solid fa-bars text-2xl"></i>
+        </button>
     </header>
+
+    <!-- UI Mobile Menu (Slide Menu) -->
+    <div id="mobileMenu" class="fixed inset-0 z-50 bg-[#05070f]/95 backdrop-blur-xl transform translate-x-full transition-transform duration-300 md:hidden flex flex-col">
+        <!-- Header Menu Mobile -->
+        <div class="h-20 flex items-center justify-between px-4 border-b border-slate-800">
+            <span class="font-bold text-white text-lg">Menu Navigasi</span>
+            <button onclick="toggleMobileMenu()" class="text-slate-400 hover:text-white p-2 transition">
+                <i class="fa-solid fa-xmark text-2xl"></i>
+            </button>
+        </div>
+        
+        <!-- List Menu Mobile -->
+        <div class="flex flex-col p-6 space-y-6 flex-grow overflow-y-auto">
+            <a href="/#surah-list" onclick="toggleMobileMenu()" class="text-lg font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-list-ol w-8 text-emerald-400"></i> Daftar Surah</a>
+            <a href="/bookmark" onclick="toggleMobileMenu()" class="text-lg font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-bookmark w-8 text-amber-400"></i> Bookmark</a>
+            <a href="/history" onclick="toggleMobileMenu()" class="text-lg font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-clock-rotate-left w-8 text-blue-400"></i> History</a>
+            <a href="#" onclick="toggleMobileMenu()" class="text-lg font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-headphones w-8 text-cyan-400"></i> Qari & Audio</a>
+            <a href="/donate" onclick="toggleMobileMenu()" class="text-lg font-medium text-rose-400 hover:text-rose-300"><i class="fa-solid fa-hand-holding-heart w-8"></i> Donate</a>
+        </div>
+
+        <!-- Tombol Mulai Baca (Posisi di Bawah) -->
+        <div class="p-6 border-t border-slate-800 pb-10">
+            <a href="/#surah-list" onclick="toggleMobileMenu()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold py-3.5 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.4)] transition">
+                <i class="fa-solid fa-book-open mr-2"></i> Mulai Baca
+            </a>
+        </div>
+    </div>
 
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         
@@ -159,6 +210,21 @@
             <p>Al-Quran Digital Indonesia &copy; 2026 • Menggunakan API dari equran.id</p>
         </div>
     </footer>
+    <script>
+        // Fungsi untuk Buka/Tutup Menu Mobile
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            if (menu.classList.contains('translate-x-full')) {
+                // Buka menu (geser dari kanan ke kiri)
+                menu.classList.remove('translate-x-full');
+                menu.classList.add('translate-x-0');
+            } else {
+                // Tutup menu
+                menu.classList.remove('translate-x-0');
+                menu.classList.add('translate-x-full');
+            }
+        }
+    </script>
     <script>
         function searchSurah() {
             let input = document.getElementById('searchInput').value.toLowerCase();
