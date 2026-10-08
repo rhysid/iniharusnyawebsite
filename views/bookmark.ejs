@@ -1,15 +1,36 @@
 <!DOCTYPE html>
 <html lang="id" class="dark">
 <head>
-    <!-- Tambahin ini di dalam tag <head> semua file EJS lo -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#10b981">
     <title>Bookmark - Al-Quran Digital</title>
+     <link rel="icon" type="image/png" href="/favicon.png">
+
+    <!-- Primary Meta Tags (SEO Umum) -->
+    <title>Al-Quran Digital Indonesia - Baca, Audio, Tafsir & Bookmark</title>
+    <meta name="title" content="Bookmark - Al-Quran Digital">
+    <meta name="description" content="Platform Al-Quran Digital terlengkap dengan terjemahan bahasa Indonesia, audio murottal 5 qari terbaik, tafsir Kemenag, dan pencarian cepat.">
+
+    <!-- Open Graph / Facebook / WhatsApp Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://quraan.web.id"> <!-- Ganti pakai domain asli lo nanti kalau udah online -->
+    <meta property="og:title" content="Al-Quran Digital Indonesia - Baca, Audio, Tafsir & Bookmark">
+    <meta property="og:description" content="Platform Al-Quran Digital terlengkap dengan terjemahan bahasa Indonesia, audio murottal 5 qari terbaik, tafsir Kemenag, dan pencarian cepat.">
+    <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/3382/3382215.png"> <!-- Ganti link ini pake gambar banner/logo web lo yang ukuran 1200x630px biar cakep -->
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://quraan.web.id">
+    <meta name="twitter:title" content="Al-Quran Digital Indonesia - Baca, Audio, Tafsir & Bookmark">
+    <meta name="twitter:description" content="Platform Al-Quran Digital terlengkap dengan terjemahan bahasa Indonesia, audio murottal 5 qari terbaik, tafsir Kemenag, dan pencarian cepat.">
+    <meta name="twitter:image" content="https://cdn-icons-png.flaticon.com/512/3382/3382215.png">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>body { background-color: #05070f; color: white; }</style>
 </head>
 <body class="p-8">
+    
     <a href="/" class="text-emerald-400 mb-6 inline-block"><i class="fa-solid fa-arrow-left"></i> Kembali</a>
     <h1 class="text-3xl font-bold mb-6"><i class="fa-solid fa-bookmark text-amber-400"></i> Daftar Bookmark</h1>
     
@@ -34,6 +55,21 @@
                     </div>
                 `;
             });
+        }
+    </script>
+    <script>
+        // Fungsi untuk Buka/Tutup Menu Mobile
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            if (menu.classList.contains('translate-x-full')) {
+                // Buka menu (geser dari kanan ke kiri)
+                menu.classList.remove('translate-x-full');
+                menu.classList.add('translate-x-0');
+            } else {
+                // Tutup menu
+                menu.classList.remove('translate-x-0');
+                menu.classList.add('translate-x-full');
+            }
         }
     </script>
 </body>
