@@ -3,42 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surah <%= surah.namaLatin %> - Al-Quran Digital</title>
+    
+    <!-- SEO Meta Tags & Canonical -->
+    <title>Surah <%= surah.namaLatin %> (<%= surah.arti %>) - Teks Arab, Latin, & Terjemahan</title>
+    <meta name="description" content="Baca Surah <%= surah.namaLatin %> (Surah ke-<%= surah.nomor %>) lengkap dengan teks Arab, transliterasi Latin, terjemahan Bahasa Indonesia, audio murottal, dan tafsir Kemenag RI.">
+    <link rel="canonical" href="<%= canonicalUrl %>" />
+    
+    <!-- Open Graph (Facebook/WA) -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="<%= canonicalUrl %>">
+    <meta property="og:title" content="Surah <%= surah.namaLatin %> - Al-Quran Digital">
+    <meta property="og:description" content="Baca Surah <%= surah.namaLatin %> lengkap dengan teks Arab, terjemahan Indonesia, audio murottal 5 qari terbaik, dan tafsir lengkap.">
+    <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/3382/3382215.png">
+    
+    <!-- Structured Data (JSON-LD): WebPage -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Surah <%= surah.namaLatin %>",
+      "description": "Teks Arab, Latin, Terjemahan, Audio & Tafsir Surah <%= surah.namaLatin %>.",
+      "url": "<%= canonicalUrl %>",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Al-Quran Digital Indonesia"
+      }
+    }
+    </script>
+
+    <!-- Structured Data (JSON-LD): Breadcrumb -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Beranda",
+        "item": "<%= canonicalUrl.replace(`/surah/${surah.namaLatin.toLowerCase().replace(/['\\s]+/g, '-').replace(/[^a-z0-9-]/g, '')}`, '') %>"
+      },{
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Surah <%= surah.namaLatin %>",
+        "item": "<%= canonicalUrl %>"
+      }]
+    }
+    </script>
+
+    <!-- Tailwind, Fonts, CSS dll -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#10b981">
+    
     <style>
         body { background-color: #05070f; color: #f3f4f6; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
         .cosmic-bg { position: fixed; inset: 0; z-index: -1; background-color: #04060d; }
         .glass-nav { background: rgba(5, 7, 15, 0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
         .glass-card { background: rgba(13, 18, 30, 0.65); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
         .font-quran { font-family: 'Amiri', serif; line-height: 2.3; }
-        /* Custom Scrollbar Modal */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #05070f; }
         ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 4px; }
     </style>
+
 </head>
 <body class="min-h-screen pb-32">
     <div class="cosmic-bg"></div>
 
-    <header class="sticky top-0 z-40 glass-nav h-20 flex items-center justify-between px-4 lg:px-12">
-        <a href="/" class="flex items-center space-x-3">
+  <!-- Header Utama -->
+    <header class="sticky top-0 z-40 glass-nav h-20 flex items-center justify-between px-4 lg:px-12 relative">
+        <a href="/" class="flex items-center space-x-3 group">
             <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-cyan-400 p-[1px] flex items-center justify-center">
                 <div class="w-full h-full bg-[#05070f] rounded-[11px] flex items-center justify-center">
                     <i class="fa-solid fa-book-quran text-emerald-400 text-xl"></i>
                 </div>
             </div>
-            <div><span class="text-xl font-bold text-white">Al-Quran Digital</span></div>
+            <div>
+                <span class="text-xl font-bold text-white">Al-Quran Digital</span>
+                <span class="block text-[10px] text-emerald-400 font-bold uppercase tracking-wider">Indonesia</span>
+            </div>
         </a>
-        <nav class="hidden md:flex items-center space-x-6">
-            <a href="/" class="text-sm font-medium text-emerald-400"><i class="fa-solid fa-list-ol mr-2"></i>Daftar Surah</a>
-            <a href="/bookmark" class="text-sm font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-bookmark mr-2 text-amber-400"></i>Bookmark</a>
-            <a href="/history" class="text-sm font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-clock-rotate-left mr-2 text-blue-400"></i>History</a>
-        </nav>
+
+        <!-- Menu Navigasi Desktop -->
+        <div class="hidden md:flex items-center space-x-6">
+            <nav class="flex items-center space-x-6">
+                <a href="/#surah-list" class="text-sm font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-list-ol mr-2 text-emerald-400"></i>Daftar Surah</a>
+                <a href="/bookmark" class="text-sm font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-bookmark mr-2 text-amber-400"></i>Bookmark</a>
+                <a href="/history" class="text-sm font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-clock-rotate-left mr-2 text-blue-400"></i>History</a>
+                <a href="#" class="text-sm font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-headphones mr-2 text-cyan-400"></i>Qari & Audio</a>
+                <a href="/donate" class="text-sm font-medium text-rose-400 hover:text-rose-300"><i class="fa-solid fa-hand-holding-heart mr-2"></i>Donate</a>
+            </nav>
+            <a href="/#surah-list" class="bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-5 py-2.5 rounded-xl text-sm transition flex items-center shadow-[0_0_15px_rgba(16,185,129,0.4)]">
+                <i class="fa-solid fa-book-open mr-2"></i> Mulai Baca
+            </a>
+        </div>
+
+        <!-- Tombol Hamburger Mobile (Garis 3) -->
+        <button onclick="toggleMobileMenu()" class="md:hidden text-emerald-400 p-2 focus:outline-none hover:text-emerald-300 transition">
+            <i class="fa-solid fa-bars text-2xl"></i>
+        </button>
     </header>
+
+    <!-- UI Mobile Menu (Slide Menu) -->
+    <div id="mobileMenu" class="fixed inset-0 z-50 bg-[#05070f]/95 backdrop-blur-xl transform translate-x-full transition-transform duration-300 md:hidden flex flex-col">
+        <!-- Header Menu Mobile -->
+        <div class="h-20 flex items-center justify-between px-4 border-b border-slate-800">
+            <span class="font-bold text-white text-lg">Menu Navigasi</span>
+            <button onclick="toggleMobileMenu()" class="text-slate-400 hover:text-white p-2 transition">
+                <i class="fa-solid fa-xmark text-2xl"></i>
+            </button>
+        </div>
+        
+        <!-- List Menu Mobile -->
+        <div class="flex flex-col p-6 space-y-6 flex-grow overflow-y-auto">
+            <a href="/#surah-list" onclick="toggleMobileMenu()" class="text-lg font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-list-ol w-8 text-emerald-400"></i> Daftar Surah</a>
+            <a href="/bookmark" onclick="toggleMobileMenu()" class="text-lg font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-bookmark w-8 text-amber-400"></i> Bookmark</a>
+            <a href="/history" onclick="toggleMobileMenu()" class="text-lg font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-clock-rotate-left w-8 text-blue-400"></i> History</a>
+            <a href="#" onclick="toggleMobileMenu()" class="text-lg font-medium text-gray-300 hover:text-white"><i class="fa-solid fa-headphones w-8 text-cyan-400"></i> Qari & Audio</a>
+            <a href="/donate" onclick="toggleMobileMenu()" class="text-lg font-medium text-rose-400 hover:text-rose-300"><i class="fa-solid fa-hand-holding-heart w-8"></i> Donate</a>
+        </div>
+
+        <!-- Tombol Mulai Baca (Posisi di Bawah) -->
+        <div class="p-6 border-t border-slate-800 pb-10">
+            <a href="/#surah-list" onclick="toggleMobileMenu()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold py-3.5 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.4)] transition">
+                <i class="fa-solid fa-book-open mr-2"></i> Mulai Baca
+            </a>
+        </div>
+    </div>
 
     <main class="max-w-4xl mx-auto px-4 py-8 relative">
         
@@ -48,13 +141,13 @@
             <button onclick="openTafsirModal()" class="px-4 py-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-sm font-bold text-amber-400 hover:bg-amber-500/20 transition"><i class="fa-solid fa-lightbulb mr-1"></i> Tafsir Surah</button>
         </div>
 
-        <!-- Banner Surah -->
-        <div class="glass-card p-8 rounded-3xl text-center relative mb-6 border-emerald-500/30">
+        <!-- Banner Surah (H1 Optimal untuk SEO) -->
+        <article class="glass-card p-8 rounded-3xl text-center relative mb-6 border-emerald-500/30">
             <span class="px-3 py-1 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-4 block w-max mx-auto uppercase">
                 <%= surah.tempatTurun %> • <%= surah.jumlahAyat %> AYAT
             </span>
-            <h1 class="text-4xl font-extrabold text-white mb-1"><%= surah.namaLatin %></h1>
-            <p class="text-slate-400 text-sm mb-4"><%= surah.arti %></p>
+            <h1 class="text-4xl font-extrabold text-white mb-1">Surah <%= surah.namaLatin %></h1>
+            <p class="text-slate-400 text-sm mb-4">Arti: <%= surah.arti %></p>
             <p class="text-6xl font-quran text-emerald-400 my-6"><%= surah.nama %></p>
             
             <div class="flex justify-center items-center gap-3 mt-6">
@@ -69,10 +162,10 @@
                     <option value="05" selected>Mishary Rashid</option>
                 </select>
             </div>
-        </div>
+        </article>
 
         <!-- Ayat List -->
-        <div class="space-y-6">
+        <section class="space-y-6">
             <% if (surah.nomor !== 1 && surah.nomor !== 9) { %>
                 <div class="glass-card p-6 rounded-2xl text-center mb-6">
                     <p class="font-quran text-4xl text-emerald-400">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
@@ -84,7 +177,7 @@
                     <div class="flex items-center justify-between pb-4 border-b border-slate-800/80">
                         <div class="flex items-center gap-3">
                             <span class="w-8 h-8 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center"><%= ayat.nomorAyat %></span>
-                            <span class="text-xs text-slate-500"><%= surah.namaLatin %> : <%= ayat.nomorAyat %></span>
+                            <span class="text-xs text-slate-500"><%= surah.namaLatin %> Ayat <%= ayat.nomorAyat %></span>
                         </div>
                         
                         <div class="flex items-center gap-2">
@@ -107,10 +200,10 @@
                     <div class="text-sm text-slate-300 leading-relaxed pt-2 border-t border-slate-800/40"><%= ayat.teksIndonesia %></div>
                 </div>
             <% }) %>
-        </div>
+        </section>
 
         <!-- Navigasi Bawah -->
-        <div class="flex items-center justify-center gap-4 mt-10 pt-8 border-t border-slate-800/80 mb-4">
+        <nav aria-label="Navigasi Surah" class="flex items-center justify-center gap-4 mt-10 pt-8 border-t border-slate-800/80 mb-4">
             <% if (surah.nomor > 1) { %>
                 <a href="/surah/<%= surah.nomor - 1 %>" class="px-4 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-gray-300 hover:text-white hover:border-emerald-500 transition flex items-center gap-2 group">
                     <i class="fa-solid fa-arrow-left text-emerald-400 group-hover:-translate-x-1 transition-transform"></i> <span>Surah Sebelumnya</span>
@@ -121,10 +214,10 @@
                     <span>Surah Selanjutnya</span> <i class="fa-solid fa-arrow-right text-emerald-400 group-hover:translate-x-1 transition-transform"></i>
                 </a>
             <% } %>
-        </div>
+        </nav>
     </main>
 
- <!-- UI MODAL TAFSIR (Sudah di-render EJS) -->
+    <!-- UI MODAL TAFSIR (Rendered by EJS) -->
     <div id="tafsirModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
         <div class="glass-card bg-[#0a0f1c] max-w-2xl w-full rounded-2xl max-h-[85vh] flex flex-col border border-slate-700 shadow-2xl transform scale-95 transition-transform duration-300" id="tafsirModalContent">
             <div class="p-5 border-b border-slate-800 flex items-center justify-between">
@@ -137,8 +230,6 @@
                 </button>
             </div>
             <div id="tafsirModalBody" class="p-6 overflow-y-auto space-y-4 text-sm leading-relaxed text-slate-300">
-                
-                <!-- Data tafsir langsung dimuat dari Node.js cuy -->
                 <% tafsir.tafsir.forEach(item => { %>
                     <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 hover:border-amber-500/30 transition">
                         <h4 class="font-bold text-amber-400 mb-2 flex items-center gap-2">
@@ -148,15 +239,13 @@
                         <p class="text-sm text-slate-300 leading-relaxed text-justify"><%= item.teks %></p>
                     </div>
                 <% }) %>
-
             </div>
         </div>
     </div>
 
-    <!-- UI GLOBAL AUDIO PLAYER (Sticky Bottom) -->
+    <!-- UI GLOBAL AUDIO PLAYER -->
     <div id="stickyAudioPlayer" class="fixed bottom-0 inset-x-0 z-50 glass-nav border-t border-slate-800/80 px-4 py-3 transform translate-y-full transition-transform duration-300">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-            
             <div class="flex items-center space-x-3 w-full sm:w-1/4">
                 <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center shrink-0">
                     <i id="audioDiscIcon" class="fa-solid fa-compact-disc text-emerald-400 text-lg"></i>
@@ -186,11 +275,9 @@
         </div>
     </div>
 
-    <!-- Hidden HTML Audio Element -->
     <audio id="globalAudio"></audio>
 
     <script>
-        // --- LOGIC HISTORY & BOOKMARK ---
         window.onload = function() {
             let history = JSON.parse(localStorage.getItem('quran_history')) || [];
             let currentSurah = { 
@@ -237,8 +324,6 @@
             alert("Ayat berhasil disalin!");
         }
 
-
-        // --- LOGIC AUDIO PLAYER STICKY ---
         const audioEl = document.getElementById('globalAudio');
         const stickyPlayer = document.getElementById('stickyAudioPlayer');
         const playIcon = document.getElementById('globalPlayPauseIcon');
@@ -265,11 +350,9 @@
         function startAudio(url, title, subtitle) {
             audioEl.src = url;
             audioEl.play();
-            
             document.getElementById('audioSurahName').innerText = title;
             document.getElementById('audioAyatDetail').innerText = subtitle;
-            stickyPlayer.classList.remove('translate-y-full'); // Munculin Player
-            
+            stickyPlayer.classList.remove('translate-y-full');
             playIcon.className = "fa-solid fa-pause";
             discIcon.classList.add('animate-spin');
         }
@@ -325,14 +408,10 @@
             return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
         }
 
-
-     // --- LOGIC MODAL TAFSIR ---
         function openTafsirModal() {
             const modal = document.getElementById('tafsirModal');
             const modalContent = document.getElementById('tafsirModalContent');
-            
             modal.classList.remove('hidden');
-            // Sedikit delay buat animasi pop
             setTimeout(() => {
                 modal.classList.remove('opacity-0');
                 modalContent.classList.remove('scale-95');
@@ -342,13 +421,26 @@
         function closeTafsirModal() {
             const modal = document.getElementById('tafsirModal');
             const modalContent = document.getElementById('tafsirModalContent');
-            
             modal.classList.add('opacity-0');
             modalContent.classList.add('scale-95');
-            
             setTimeout(() => {
                 modal.classList.add('hidden');
-            }, 300); // Sesuaikan dengan durasi animasi
+            }, 300);
+        }
+    </script>
+    <script>
+        // Fungsi untuk Buka/Tutup Menu Mobile
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            if (menu.classList.contains('translate-x-full')) {
+                // Buka menu (geser dari kanan ke kiri)
+                menu.classList.remove('translate-x-full');
+                menu.classList.add('translate-x-0');
+            } else {
+                // Tutup menu
+                menu.classList.remove('translate-x-0');
+                menu.classList.add('translate-x-full');
+            }
         }
     </script>
 </body>
