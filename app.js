@@ -1,10 +1,14 @@
 const express = require('express');
+const compression = require('compression'); // Tambahin ini
 const axios = require('axios');
 const path = require('path');
 
 const app = express();
 const port = 3000;
 
+app.use(compression());
+// Simpan cache file statis selama 1 hari di browser user
+app.use(express.static('public', { maxAge: '1d' }));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static('public'));
